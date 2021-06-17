@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %} Calculator {% endblock %}
+{% block body %}
+
+<div align="center">
+    <div class="current-number" style="width:132px;height:25px;border:1px solid #000">1</div>
+    <div class="buttons">
+    <table>
+        <tr>
+            <td><a class="button" href="#" data-key="1">1</a></td>
+            <td><a class="button" href="#" data-key="2">2</a></td>
+            <td><a class="button" href="#" data-key="3">3</a></td>
+            <td><a class="button" href="#" data-key="+">+</a></td>
+            <td><a class="button" href="#" data-key="-">-</a></td>
+        </tr>
+        <tr>
+            <td><a class="button" href="#" data-key="4">4</a></td>
+            <td><a class="button" href="#" data-key="5">5</a></td>
+            <td><a class="button" href="#" data-key="6">6</a></td>
+            <td><a class="button" href="#" data-key="*">*</a></td>
+            <td><a class="button" href="#" data-key="divide">/</a></td>
+        </tr>
+        <tr>
+            <td><a class="button" href="#" data-key="7">7</a></td>
+            <td><a class="button" href="#" data-key="8">8</a></td>
+            <td><a class="button" href="#" data-key="9">9</a></td>
+            <td><a class="button" href="#" data-key="=">=</a></td>
+            <td><a class="button" href="#" data-key="C">C</a></td>
+        </tr>
+        <tr>
+            <td><a class="button" href="#" data-key="0">0</a></td>
+            <td><a class="button" href="#" data-key="dot">.</a></td>
+        </tr>
+    </table>
+    </div>
+</div>
+{% endblock %}
