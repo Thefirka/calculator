@@ -10,23 +10,23 @@ class Request implements IRequest
     /**
      * @var array
      */
-    private $data;
+    private $request;
 
-    public function __construct(array $data)
+    public function __construct(array $request)
     {
-        $this->data = $data;
+        $this->request = $request;
     }
 
     public function get($name)
     {
-        return array_key_exists($name, $this->data)
-            ? $this->data[$name]
+        return array_key_exists($name, $this->request)
+            ? $this->request[$name]
             : null;
     }
 
     public function set($name, $value): IRequest
     {
-        $this->data[$name] = $value;
+        $this->request[$name] = $value;
 
         return $this;
     }

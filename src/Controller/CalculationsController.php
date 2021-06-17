@@ -21,8 +21,7 @@ class CalculationsController extends AbstractController
     {
         $calculate = CalculateFactory::createCalculator();
         $storage = StorageFactory::createStorageSession(new Session());
-        dd($storage->getSession('session'));
-        $requestHandler = RequestFactory::createRequestSchema(['1']);
-        return $this->json(['symbol' => $symbol]);
+        $requestHandler = RequestFactory::createRequestSchema(['session' => $symbol]);
+        return $this->json(['calculator' => $symbol]);
     }
 }

@@ -28,11 +28,10 @@ let $currentNumber = $('.current-number')
 $container.find('a').on('click', function(e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
-    console.log($link.data('key'))
     $.ajax({
         url: '/calculations/' + $link.data('key'),
         method: 'POST'
     }).then(function(data) {
-        $currentNumber.find('current-number').text(data.votes);
+        $currentNumber.find('.number').text(data.calculator);
     })
 })
