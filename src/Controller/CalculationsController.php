@@ -15,15 +15,15 @@ use Symfony\Component\HttpFoundation\Session\Session;
 class CalculationsController extends AbstractController
 {
     /**
-     * @Route ("/{equation<[0-9]|divide|dot|=|C|\+|\-|\*>}", name="calculator_equation")
+     * @Route ("/{equation<[0-9]|divide|dot|=|C|\+|\-|\*>}", methods="POST", name="calculator_equation")
      */
     public function calculate($equation): JsonResponse
     {
-        $sessionName = 'session';                        //must be the same as $sessionName in CalculatorController.php
         $calculate = CalculateFactory::createCalculator();
         $storage = StorageFactory::createStorageSession(new Session());
+        $sessionName = $storage->getSessionName();
         $request = RequestFactory::createRequestSchema([$sessionName => $equation]);
-        $equation = $calculate->requestHandler($sessionName, $request, $storage);
+        $equation = $calculate->requestHandler($request, $storage);
         return $this->json(['calculator' => $equation]);
     }
 }

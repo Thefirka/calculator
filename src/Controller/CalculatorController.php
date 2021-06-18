@@ -10,19 +10,13 @@ use App\CalculatorApp\Storage\StorageFactory;
 use Symfony\Component\HttpFoundation\Session\Session;
 class CalculatorController extends AbstractController
 {
-    private $post;
     /**
      * @Route("/", name="app_calculator")
      */
     public function calculator()
     {
-        $sessionName = 'session';                        //must be the same as $sessionName in CalculationsController.php
         $session = StorageFactory::createStorageSession(new Session());
-        $currentNumber = $session->getSession($sessionName);
-        if ($currentNumber == null) {
-            $currentNumber = '';
-            $session->add($sessionName, '');
-        }
+        $currentNumber = $session->getSession();
         return $this->render('calculator/calculator.html.twig', [
             'currentNumber' => $currentNumber,
         ]);

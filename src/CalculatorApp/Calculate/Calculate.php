@@ -8,11 +8,9 @@ use App\CalculatorApp\Storage\IStorage;
 
 class Calculate implements ICalculate
 {
-    public function RequestHandler($name, IRequest $request, IStorage $storage): String
+    public function RequestHandler(IRequest $request, IStorage $storage): String
     {
-
-        $specialChars = ['C', '=', 'dot','divide'];
-
+        $name = $storage->getSessionName();
         if ($this->correctElem($name, $request, $storage)) {
              if ($request->get($name) == 'C') {
                 $storage->clear();
@@ -21,35 +19,44 @@ class Calculate implements ICalculate
                 $storage->setSession($name, $result);
             }
         }
-        return $storage->getSession($name);
+        return $storage->getSession();
     }
     private function calculate($name, $storage): array
     {
         $equation = str_split($storage->getSession($name));
 
 
-        while ($equation[0] == 0 && $equation[1] != '.' && isset($equation[1])) {
+        while ($equation[0] == 0 && $equation[1] != '.' && is_numeric($equation[1])) {
             array_shift($equation);
         }
         if (!is_numeric(end($equation))) {
             array_pop($equation);
         }
         $string = implode($equation);
-        if (preg_match('/\/0\d*$|\+0\d*$|-0\d*$/', $string)) {
-            $replacements = [
-                '/\/0/' => '/',
-                '/\+0/' => '+',
-                '/-0/'  => '-',
-            ];
-
-            $equation = preg_replace(array_keys($replacements), array_values($replacements), $string);
-            $equation = str_split($equation);
-        }
         if (preg_match('/\/0*$|\+0*$|-0*$/', $string)) {
             $replacements = [
                 '/\/0/' => '',
                 '/\+0/' => '',
                 '/-0/'  => '',
+            ];
+
+            $equation = preg_replace(array_keys($replacements), array_values($replacements), $string);
+            $equation = str_split($equation);
+        }
+        if (preg_match('/^0\*0$|^0\/0$|^0\+0$|^0-0$/', $string)) {
+            $replacements = [
+                '/0\*0/' => '0',
+                '/0\/0/' => '0',
+                '/0\+0/' => '0',
+                '/0-0/'  => '0',
+            ];
+
+            $equation = preg_replace(array_keys($replacements), array_values($replacements), $string);
+            $equation = str_split($equation);
+        }
+        if (preg_match('/\/0[^.]/', $string)) {
+            $replacements = [
+                '/\/0/' => '',
             ];
 
             $equation = preg_replace(array_keys($replacements), array_values($replacements), $string);
@@ -73,17 +80,17 @@ class Calculate implements ICalculate
             $request->set($name, '/');
         }
         $secondZeroInARowRegex = '/\*0[0-9]$|\/0[0-9]$|-0[0-9]$|\+0[0-9]$/';
-        $secondDotRegex = '/.*\.\d*\./';
+        $secondDotInNumberRegex = '/.*\.\d*\./';
 
         if ($request->get($name) == '.') {
-            if (preg_match($secondDotRegex, ($storage->getSession($name) . $request->get($name))) == true) {
+            if (preg_match($secondDotInNumberRegex, ($storage->getSession() . $request->get($name))) == true) {
                 return false;
             }
         }
-        if (preg_match($secondZeroInARowRegex, ($storage->getSession($name) . $request->get($name))) == true) {
+        if (preg_match($secondZeroInARowRegex, ($storage->getSession() . $request->get($name))) == true) {
             return false;
         }
-        if (is_numeric(substr($storage->getSession($name), -1)) == false) {
+        if (is_numeric(substr($storage->getSession(), -1)) == false) {
             if (is_numeric($request->get($name)) == true) {
                     $storage->add($name, $request->get($name));
                     return true;

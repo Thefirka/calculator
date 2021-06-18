@@ -9,5 +9,5 @@ use App\CalculatorApp\Storage\IStorage;
 
 interface ICalculate
 {
-    public function requestHandler($name, IRequest $request, IStorage $storage);
+    public function requestHandler(IRequest $request, IStorage $storage);
 }
