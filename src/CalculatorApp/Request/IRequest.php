@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\CalculatorApp\RequestHandler;
+namespace App\CalculatorApp\Request;
 
 
 interface IRequest

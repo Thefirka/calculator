@@ -29,7 +29,7 @@ $container.find('a').on('click', function(e) {
     e.preventDefault();
     let $link = $(e.currentTarget);
     $.ajax({
-        url: '/calculations/' + $link.data('key'),
+        url: '/' + $link.data('key'),
         method: 'POST'
     }).then(function(data) {
         $currentNumber.find('.number').text(data.calculator);

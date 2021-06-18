@@ -9,7 +9,7 @@ class Storage implements IStorage
 
     private $session;
     public function add($name, $value) {
-        $this->session->set($name, $value);
+        $this->session->set($name, ($this->session->get($name) . $value));
     }
     public function __construct(Session $session)
     {
@@ -27,6 +27,11 @@ class Storage implements IStorage
     }
     public function getSession($name)
     {
-       return $this->session->get($name);
+       return $this->session->get($name, '');
+    }
+    public function setSession($name, $value)
+    {
+        $this->session->clear();
+        $this->add($name, $value);
     }
 }

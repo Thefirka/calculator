@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\CalculatorApp\RequestHandler;
+namespace App\CalculatorApp\Request;
 
 
 
@@ -27,7 +27,6 @@ class Request implements IRequest
     public function set($name, $value): IRequest
     {
         $this->request[$name] = $value;
-
         return $this;
     }
 }
